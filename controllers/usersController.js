@@ -1,22 +1,22 @@
 const express = require('express');
-const Movie = require('../models/movie');
+const User = require('../models/user');
 
 function index(request, response, next) {
   const page = request.params.page ? request.params.page : 1;
-  Movie.paginate({}, {
+  User.paginate({}, {
     page: page,
     limit: 3
   }, (err, objs) => {
     if (err) {
       response.json({
         error: true,
-        message: 'no se pudo extraer las peliculas.',
+        message: 'no se pudo extraer los usuarios',
         objs: {}
       });
     } else {
       response.json({
         error: false,
-        message: 'Lista de Peliculas',
+        message: 'Lista de Usuarios',
         objs: objs
       });
     }
@@ -24,28 +24,26 @@ function index(request, response, next) {
 }
 
 function create(request, response, next) {
-  const title = request.body.title;
-  const genre = request.body.genre;
-  const duration = request.body.duration;
-  const director = request.body.director;
+  const name = request.body.name;
+  const lastName = request.body.lastName;
+  const email = request.body.email;
 
-  let movie = new Movie();
-  movie.title = title;
-  movie.genre = genre;
-  movie.duration = duration;
-  movie.director = director;
+  let user = new User();
+  user.name = name;
+  user.lastName = lastName;
+  user.email = email;
 
-  movie.save((err, obj) => {
+  user.save((err, obj) => {
     if (err) {
       response.json({
         error: true,
-        message: 'Pelicula no  Guardada',
+        message: 'Usuario no  Guardado',
         objs: {}
       });
     } else {
       response.json({
         error: false,
-        message: 'Pelicula Guardada',
+        message: 'usuario Guardado',
         objs: obj
       });
     }
@@ -53,32 +51,27 @@ function create(request, response, next) {
 }
 
 function update(request, response, next) {
-  const title = request.body.title;
-  const genre = request.body.genre;
-  const duration = request.body.duration;
-  const director = request.body.director;
-
-
-
-
+  const name = request.body.name;
+  const lastName = request.body.lastName;
+  const email = request.body.email;
 }
 
 function remove(request, response, next) {
   const id = request.params.id;
   if (id) {
-    Movie.remove({
+    User.remove({
       _id: id
     }, function(err) {
       if (err) {
         response.json({
           error: true,
-          message: 'Pelicula no Eliminada',
+          message: 'Usuario no Eliminado.',
           objs: {}
         });
       } else {
         response.json({
           error: false,
-          message: 'Pelicula Eliminada',
+          message: 'Usuario Eliminado.',
           objs: {}
         });
       }
@@ -86,7 +79,7 @@ function remove(request, response, next) {
   } else {
     response.json({
       error: true,
-      message: 'Pelicula no Existe',
+      message: 'Usuario no Existe',
       objs: {}
     });
   }

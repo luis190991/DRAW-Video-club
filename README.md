@@ -1,6 +1,6 @@
 # Proyecto de Video videoclub
 
-Este es el proyecto de video club para la clase de DRAW.
+Este es el proyecto de video club para la clase de **DRAW**.
 
 ## Como instalar
 
