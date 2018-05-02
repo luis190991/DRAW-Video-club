@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const async = require('async');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 function index(request, response, next) {
@@ -9,7 +10,6 @@ function index(request, response, next) {
 };
 
 function login(request, response, next) {
-  console.log("fwrsfrewfefc");
   const email = request.body.email;
   const password = request.body.password;
   async.parallel({
@@ -23,10 +23,18 @@ function login(request, response, next) {
     if (user) {
       bcrypt.hash(password, user.salt, function(err, hash) {
         if (hash === user.password) {
+          const payload = {
+            id: user._id
+          };
+          let token = jwt.sign(payload, '52d0380eb37d6d4666fddbd82daf5ee3', {
+            expiresIn: 86400
+          });
           response.json({
             error: false,
             message: 'Usuario y password ok',
-            objs: {}
+            objs: {
+              token: token
+            }
           });
         } else {
           response.json({
@@ -45,6 +53,8 @@ function login(request, response, next) {
     }
   });
 };
+
+
 
 module.exports = {
   index,
