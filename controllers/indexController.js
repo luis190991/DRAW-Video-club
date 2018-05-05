@@ -3,15 +3,22 @@ const User = require('../models/user');
 const async = require('async');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const config = require('config');
 
 
 function index(request, response, next) {
+  response.render('index', {});
+};
 
+function logout(request, response, next) {
+  response.render('logout', {});
 };
 
 function login(request, response, next) {
   const email = request.body.email;
   const password = request.body.password;
+  const key = config.get('api.key');
+  console.log(key);
   async.parallel({
     user: (callback) => {
       User.findOne({
@@ -26,7 +33,7 @@ function login(request, response, next) {
           const payload = {
             id: user._id
           };
-          let token = jwt.sign(payload, '52d0380eb37d6d4666fddbd82daf5ee3', {
+          let token = jwt.sign(payload, key, {
             expiresIn: 86400
           });
           response.json({
@@ -58,5 +65,6 @@ function login(request, response, next) {
 
 module.exports = {
   index,
-  login
+  login,
+  logout
 };

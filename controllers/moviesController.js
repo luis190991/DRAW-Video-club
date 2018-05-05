@@ -1,6 +1,25 @@
 const express = require('express');
 const Movie = require('../models/movie');
 
+function show(request, response, next) {
+  const id = request.params.id;
+  Movie.findOne({
+    _id: id
+  }, (err, obj) => {
+    response.render('movies/show', {
+      movie: obj
+    });
+  });
+}
+
+function list(request, response, next) {
+  Movie.find({}, (err, objs) => {
+    response.render('movies/list', {
+      movies: objs
+    });
+  });
+}
+
 function index(request, response, next) {
   const page = request.params.page ? request.params.page : 1;
   Movie.paginate({}, {
@@ -96,5 +115,7 @@ module.exports = {
   index,
   create,
   update,
-  remove
+  remove,
+  show,
+  list
 };

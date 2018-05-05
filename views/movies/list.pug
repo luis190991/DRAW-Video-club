@@ -1,0 +1,16 @@
+h1 lista de peliculas
+
+table
+  thead
+    tr
+      th title
+      th genre
+      th director
+      th duration
+  tbody
+    each movie in movies
+      tr
+        td #{movie.title}
+        td #{movie.genre}
+        td #{movie.director}
+        td #{movie.duration}
